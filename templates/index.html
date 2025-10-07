@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <title>Sistema de Inventario</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container">
+    <h1>Sistema de Inventario</h1>
+
+    <!-- FORMULARIO AGREGAR PRODUCTO -->
+    <h2>Agregar Producto</h2>
+    <form action="/actualizar" method="post" class="formulario">
+        <input type="text" name="codigo" placeholder="Código" required>
+        <input type="text" name="nombre" placeholder="Nombre" required>
+        <input type="number" name="cantidad" placeholder="Cantidad inicial" required>
+        <select name="tipo">
+            <option value="sistema">Sistema</option>
+            <option value="real">Real</option>
+        </select>
+        <button type="submit" name="accion" value="sumar" class="btn btn-sumar">Agregar</button>
+    </form>
+
+    <!-- FORMULARIO ACTUALIZAR CANTIDADES -->
+    <h2>Actualizar Cantidades</h2>
+    <form action="/actualizar" method="post" class="formulario">
+        <input type="text" name="codigo" placeholder="Código del producto" required>
+        <input type="number" name="cantidad" placeholder="Cantidad" required>
+        <select name="tipo">
+            <option value="sistema">Sistema</option>
+            <option value="real">Real</option>
+        </select>
+        <button type="submit" name="accion" value="sumar" class="btn btn-sumar">Sumar</button>
+        <button type="submit" name="accion" value="restar" class="btn btn-restar">Restar</button>
+    </form>
+
+    <!-- BOTONES PASAR Y EXPORTAR -->
+    <div class="acciones">
+        <form action="/pasar_real_a_fisico" method="post" onsubmit="return confirm('¿Desea continuar con el procedimiento?')">
+            <button type="submit" class="btn btn-pasar">Pasar Real a Físico</button>
+        </form>
+        <form action="/exportar_pdf" method="post">
+            <button type="submit" class="btn btn-exportar">Exportar PDF</button>
+        </form>
+    </div>
+
+    <!-- TABLA DE INVENTARIO -->
+    <table>
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Cantidad Real</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for row in tables %}
+            <tr data-barcode="{{ row['Código'] }}">
+                <td>{{ row['Código'] }}</td>
+                <td>
+                    <input type="text" value="{{ row['Producto'] }}" class="input-nombre" data-codigo="{{ row['Código'] }}">
+                </td>
+                <td>{{ row['Cantidad'] }}</td>
+                <td><input type="number" value="{{ row['Cantidad Real'] }}" readonly class="cantidad-real"></td>
+                <td>
+                    <button type="button" class="btn btn-sumar plus">+</button>
+                    <button type="button" class="btn btn-restar minus">-</button>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Input oculto para código de barras -->
+<input type="text" id="barcodeInput" autofocus style="position:absolute; top:-100px;">
+
+<script>
+// GUARDAR NOMBRE AUTOMÁTICAMENTE CON ENTER
+document.querySelectorAll('.input-nombre').forEach(input => {
+    input.addEventListener('keydown', e => {
+        if(e.key === 'Enter') {
+            const codigo = input.dataset.codigo;
+            const nombre = input.value;
+            fetch('/editar_nombre', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `codigo=${codigo}&nombre=${encodeURIComponent(nombre)}`
+            }).then(()=>location.reload());
+        }
+    });
+});
+
+// BOTONES + / -
+document.querySelectorAll('.plus').forEach(btn => {
+    btn.addEventListener('click', e => {
+        const row = e.target.closest('tr');
+        const input = row.querySelector('.cantidad-real');
+        input.value = parseInt(input.value)+1;
+    });
+});
+document.querySelectorAll('.minus').forEach(btn => {
+    btn.addEventListener('click', e => {
+        const row = e.target.closest('tr');
+        const input = row.querySelector('.cantidad-real');
+        input.value = Math.max(0, parseInt(input.value)-1);
+    });
+});
+
+// LECTURA DE CÓDIGO DE BARRAS
+let activeRow = null;
+const barcodeInput = document.getElementById('barcodeInput');
+barcodeInput.addEventListener('keydown', e => {
+    if(e.key === 'Enter') {
+        const code = barcodeInput.value.trim();
+        barcodeInput.value = '';
+        const row = document.querySelector(`tr[data-barcode="${code}"]`);
+        if(row){
+            activeRow = row;
+            alert('Producto activo: '+row.querySelector('.input-nombre').value);
+        } else {
+            alert('Código no encontrado');
+            activeRow = null;
+        }
+    }
+});
+
+// SUMAR CANTIDAD AL PRODUCTO ACTIVO
+function addQuantity(qty=1){
+    if(activeRow){
+        const input = activeRow.querySelector('.cantidad-real');
+        input.value = Math.max(0, parseInt(input.value)+qty);
+    }
+}
+
+// ATALHOS CON FLECHAS ARRIBA/ABAJO
+document.addEventListener('keydown', e => {
+    if(e.key==='ArrowUp') addQuantity(1);
+    if(e.key==='ArrowDown') addQuantity(-1);
+});
+</script>
+
+</body>
+</html>

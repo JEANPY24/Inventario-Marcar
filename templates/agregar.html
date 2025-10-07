@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Agregar Producto</title>
+</head>
+<body>
+    <h1>Agregar Producto</h1>
+    <form method="post">
+        Código: <input type="text" name="codigo" required><br>
+        Producto: <input type="text" name="producto" required><br>
+        Cantidad: <input type="number" name="cantidad" min="0" required><br>
+        <button type="submit">Guardar</button>
+    </form>
+    <br>
+    <a href="{{ url_for('index') }}">⬅ Volver</a>
+</body>
+</html>

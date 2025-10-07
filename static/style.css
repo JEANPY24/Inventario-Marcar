@@ -1,0 +1,127 @@
+body {
+    background-color: #fff6f2;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #2e2e2e;
+}
+
+.container {
+    max-width: 980px;
+    margin: 36px auto;
+    background: #fff;
+    padding: 36px;
+    border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+h1 {
+    text-align: center;
+    color: #b44c43;
+    margin-bottom: 26px;
+}
+
+.formulario {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.formulario input,
+.formulario select {
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #e6d6d3;
+    font-size: 14px;
+    min-width: 160px;
+}
+
+.btn {
+    padding: 10px 18px;
+    border-radius: 8px;
+    color: #fff;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 6px 0 rgba(0,0,0,0.18);
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.btn:active {
+    transform: translateY(4px);
+    box-shadow: 0 2px 0 rgba(0,0,0,0.12);
+}
+
+.btn-sumar { background-color: #f08080; }
+.btn-sumar:hover { filter: brightness(0.98); }
+
+.btn-restar { background-color: #d64545; }
+.btn-restar:hover { filter: brightness(0.98); }
+
+.btn-pasar {
+    background-color: #f6b26b;
+    color: #3b2f2f;
+    box-shadow: 0 6px 0 rgba(0,0,0,0.12);
+}
+.btn-pasar:active { color: #3b2f2f; }
+
+.btn-exportar { background-color: #b44c43; }
+.btn-exportar:hover { filter: brightness(0.98); }
+
+.acciones {
+    display:flex;
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 18px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+th {
+    background-color: #b44c43;
+    color: white;
+    padding: 12px;
+    font-weight: 700;
+}
+
+td {
+    padding: 10px;
+    border-bottom: 1px solid #f1ddd8;
+    text-align: center;
+    background-color: #fff;
+}
+
+tr:nth-child(even) td {
+    background-color: #fff0eb;
+}
+
+input[type="text"].input-nombre {
+    width: 90%;
+    padding: 6px;
+    border-radius: 6px;
+    border: 1px solid #e6d6d3;
+    text-align: center;
+    font-size: 14px;
+}
+
+.inline-form input[type="number"] {
+    width: 50px;
+    padding: 4px;
+    border-radius: 6px;
+    text-align: center;
+}
+
+@media (max-width: 700px) {
+    .formulario input, .formulario select {
+        min-width: 100%;
+    }
+    .acciones { flex-direction: column; }
+}

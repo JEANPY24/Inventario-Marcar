@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Buscar producto</h2>
+
+<form method="POST">
+    <input type="text" name="termino" placeholder="Código o nombre">
+    <button type="submit" class="btn">Buscar</button>
+</form>
+
+{% if resultados %}
+<h3>Resultados:</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Código Producto</th>
+            <th>Nombre del Producto</th>
+            <th>Saldo Cantidades</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for p in resultados %}
+        <tr>
+            <td>{{ p['Codigo producto'] }}</td>
+            <td>{{ p['Nombre del producto'] }}</td>
+            <td>{{ p['Saldo cantidades'] }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% elif resultados is not none %}
+<p>No se encontraron resultados.</p>
+{% endif %}
+{% endblock %}
