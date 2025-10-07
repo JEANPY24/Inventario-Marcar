@@ -1,0 +1,16 @@
+# Archivos importantes que sí deben subirse
+!app.py
+!templates/
+!static/
+!requirements.txt
+!*.xlsx
+!*.pdf
+
+# Archivos y carpetas que no deben subirse
+__pycache__/
+.env
+*.log
+*.tmp
+*.bak
+instance/
+.vscode/
