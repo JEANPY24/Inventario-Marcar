@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Escanear Código</title>
+</head>
+<body>
+    <h1>Escaneo de Inventario</h1>
+    <form method="post">
+        Código: <input type="text" name="codigo" required autofocus><br>
+        Cantidad: <input type="number" name="cantidad" min="1" required><br>
+        Operación:
+        <select name="operacion">
+            <option value="sumar">➕ Sumar</option>
+            <option value="restar">➖ Restar</option>
+        </select><br><br>
+        <button type="submit">Confirmar</button>
+    </form>
+    <br>
+    <a href="{{ url_for('index') }}">⬅ Volver</a>
+</body>
+</html>
